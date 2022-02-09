@@ -6,13 +6,11 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 15:26:09 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/09 15:37:06 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/09 16:40:09 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "libft.h"
@@ -62,6 +60,7 @@ void	exec_cmd(char *cmd, char **env)
 		return ;
 	}
 	if (execve(path_cmd, tmp, env) == -1)
-		perror(strerror(errno));
+		perror(tmp[0]);
 	free_tab(tmp);
+	free_tab(env);
 }

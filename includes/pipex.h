@@ -6,13 +6,14 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 14:19:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/09 15:27:26 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/09 16:13:31 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
+void	exit_with_msg(char *str);
 void	exec_cmd(char *cmd, char **env);
 
 char	*get_path_cmd(char *cmd, char **env);
