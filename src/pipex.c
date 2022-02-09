@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 15:26:09 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/09 16:40:09 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/09 22:01:43 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 char	**get_path_env(char **env)
 {
-
 	while (*env)
 	{
 		if (!ft_strncmp(*env, "PATH", 4))
@@ -46,21 +45,21 @@ char	*get_path_cmd(char *cmd, char **env)
 	return (NULL);
 }
 
-void	exec_cmd(char *cmd, char **env)
+void	exec_cmd(char *cmd, char **path)
 {
 	char	*path_cmd;
 	char	**tmp;
 
 	tmp = ft_split(cmd, ' ');
-	path_cmd = get_path_cmd(tmp[0], env);
+	path_cmd = get_path_cmd(tmp[0], path);
 	if (!path_cmd)
 	{
 		perror(tmp[0]);
 		free_tab(tmp);
 		return ;
 	}
-	if (execve(path_cmd, tmp, env) == -1)
+	if (execve(path_cmd, tmp, path) == -1)
 		perror(tmp[0]);
+	ft_printf("lol\n");
 	free_tab(tmp);
-	free_tab(env);
 }
