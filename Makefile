@@ -7,7 +7,7 @@ INCLUDES=includes/
 CFLAGS=-Wall -Wextra -Werror -I $(INCLUDES)
 NAME=$(BIN_DIR)pipex
 
-CFILES=$(addprefix $(SRC_DIR), main.c)
+CFILES=$(addprefix $(SRC_DIR), main.c utils.c pipex.c)
 OBJS=$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(CFILES))
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c

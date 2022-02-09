@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/09 15:27:55 by hubretec         ###   ########.fr       */
+/*   Created: 2022/02/09 14:19:54 by hubretec          #+#    #+#             */
+/*   Updated: 2022/02/09 15:27:26 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "pipex.h"
+#ifndef PIPEX_H
+# define PIPEX_H
 
-int	main(int ac, char **av, char **env)
-{
-	char	**path;
+void	exec_cmd(char *cmd, char **env);
 
-	if (ac < 4)
-		return (0);
-	path = get_path_env(env);
-	exec_cmd(av[2], path);
-	free_tab(path);
-	return (0);
-}
+char	*get_path_cmd(char *cmd, char **env);
+
+void	*free_tab(char **tab);
+
+char	**get_path_env(char **env);
+
+#endif
