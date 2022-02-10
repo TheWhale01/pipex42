@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/09 22:04:31 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/10 10:52:25 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	child_p(char **av, char **path, int *fd)
 	if (infile == -1)
 		exit_with_msg(NULL);
 	dup2(fd[1], STDOUT);
-	dup2(infile, STDOUT);
+	dup2(infile, STDIN_FILENO);
 	close(fd[0]);
 	exec_cmd(av[2], path);
 }
@@ -37,8 +37,8 @@ void	main_p(char **av, char **path, int *fd)
 	outfile = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
 		exit_with_msg(NULL);
-	dup2(fd[0], STDIN);
-	dup2(outfile, STDIN);
+	dup2(fd[0], STDIN_FILENO);
+	dup2(outfile, STDOUT);
 	close(fd[1]);
 	exec_cmd(av[3], path);
 }
@@ -60,6 +60,7 @@ int	main(int ac, char **av, char **env)
 	else if (!pid)
 		child_p(av, path, fd);
 	waitpid(pid, NULL, 0);
+	main_p(av, path, fd);
 	free_tab(path);
 	return (0);
 }

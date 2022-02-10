@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 15:26:09 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/09 22:01:43 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/10 10:30:57 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,5 @@ void	exec_cmd(char *cmd, char **path)
 	}
 	if (execve(path_cmd, tmp, path) == -1)
 		perror(tmp[0]);
-	ft_printf("lol\n");
 	free_tab(tmp);
 }
