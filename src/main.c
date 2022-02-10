@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/10 10:52:25 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/10 14:00:23 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	child_p(char **av, char **path, int *fd)
 	dup2(infile, STDIN_FILENO);
 	close(fd[0]);
 	exec_cmd(av[2], path);
+	close(infile);
 }
 
 void	main_p(char **av, char **path, int *fd)
@@ -41,6 +42,7 @@ void	main_p(char **av, char **path, int *fd)
 	dup2(outfile, STDOUT);
 	close(fd[1]);
 	exec_cmd(av[3], path);
+	close(outfile);
 }
 
 int	main(int ac, char **av, char **env)
