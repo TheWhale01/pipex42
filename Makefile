@@ -9,7 +9,7 @@ NAME=$(BIN_DIR)pipex
 NAME_BONUS=$(BIN_DIR)pipex_bonus
 
 CFILES=$(addprefix $(SRC_DIR), main.c utils.c pipex.c)
-CFILES_BONUS=$(addprefix $(SRC_DIR)bonus/, main_bonus.c pipex_bonus.c ../utils.c)
+CFILES_BONUS=$(addprefix $(SRC_DIR)bonus/, main_bonus.c ../pipex.c ../utils.c)
 OBJS=$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(CFILES))
 OBJS_BONUS=$(patsubst $(SRC_DIR)bonus/%.c, $(OBJ_DIR)bonus/%.o, $(CFILES_BONUS))
 
