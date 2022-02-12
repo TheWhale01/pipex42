@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 13:39:05 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/12 13:59:24 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/12 14:21:47 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	write_pipe(int	*fd, char *limiter)
 		line = get_next_line(STDIN);
 		if (!line)
 			break ;
-		if (!ft_strcmp(line, limiter))
+		if (!ft_strncmp(line, limiter, ft_strlen(limiter)))
 		{
 			free(line);
 			exit(EXIT_SUCCESS);

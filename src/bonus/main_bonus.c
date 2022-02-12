@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/12 13:56:01 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/12 14:19:13 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ void	child_p(char *cmd, char **env)
 	}
 }
 
+void	main_p(char **av, char **env, int outfile)
+{
+	while (*(av++ + 2))
+		child_p(*av, env);
+	dup2(outfile, STDOUT_FILENO);
+	exec_cmd(*av, get_path_env(env));
+}
 
 void	here_doc(char *limiter, int ac)
 {
@@ -90,9 +97,6 @@ int	main(int ac, char **av, char **env)
 			exit_with_msg("Opening files");
 		dup2(infile, STDIN_FILENO);
 	}
-	while (i < ac - 2)
-		child_p(av[i++], env);
-	dup2(outfile, STDOUT_FILENO);
-	exec_cmd(av[ac - 2], env);
+	main_p(av + i, env, outfile);
 	return (0);
 }
