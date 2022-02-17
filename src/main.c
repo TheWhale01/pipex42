@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/17 10:44:06 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/17 12:21:07 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-#include "libft.h"
 #include "pipex.h"
 
 void	child_p(char **av, char **path, int *fd)
@@ -24,7 +23,7 @@ void	child_p(char **av, char **path, int *fd)
 	infile = open(av[1], O_RDONLY, 0644);
 	if (infile == -1)
 		exit_with_msg(NULL);
-	dup2(fd[1], STDOUT);
+	dup2(fd[1], STDOUT_FILENO);
 	dup2(infile, STDIN_FILENO);
 	close(fd[0]);
 	exec_cmd(av[2], path);
@@ -39,7 +38,7 @@ void	main_p(char **av, char **path, int *fd)
 	if (outfile == -1)
 		exit_with_msg(NULL);
 	dup2(fd[0], STDIN_FILENO);
-	dup2(outfile, STDOUT);
+	dup2(outfile, STDOUT_FILENO);
 	close(fd[1]);
 	exec_cmd(av[3], path);
 	close(outfile);

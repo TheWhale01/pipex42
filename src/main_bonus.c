@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/17 11:18:47 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/17 12:17:41 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-#include "libft.h"
 #include "pipex_bonus.h"
 
 void	child_p(char *cmd, char **env)
@@ -57,7 +56,7 @@ void	here_doc(char *limiter, int ac)
 
 	if (ac < 6)
 	{
-		ft_putendl_fd("Wrong number of args.", STDERR);
+		ft_putendl_fd("Wrong number of args.", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	if (pipe(fd) == -1)
@@ -81,21 +80,14 @@ int	main(int ac, char **av, char **env)
 
 	if (ac < 5)
 		return (0);
+	i = 3;
+	outfile = safe_open(av[ac - 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (!ft_strncmp(av[1], "here_doc", 8))
-	{
-		i = 3;
-		outfile = open(av[ac - 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (outfile == -1)
-			exit_with_msg(av[ac - 1]);
 		here_doc(av[2], ac);
-	}
 	else
 	{
 		i = 2;
-		outfile = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		infile = open(av[1], O_RDONLY, 0644);
-		if (outfile == -1 || infile == -1)
-			exit_with_msg("Opening files");
 		dup2(infile, STDIN_FILENO);
 	}
 	main_p(&av[i], env, outfile);

@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 15:26:09 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/12 13:50:43 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/17 12:19:42 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "libft.h"
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 char	**get_path_env(char **env)
 {
@@ -56,9 +55,12 @@ void	exec_cmd(char *cmd, char **path)
 	{
 		perror(tmp[0]);
 		free_tab(tmp);
+		free_tab(path);
 		return ;
 	}
 	if (execve(path_cmd, tmp, path) == -1)
 		perror(tmp[0]);
 	free_tab(tmp);
+	free_tab(path);
+	free(path_cmd);
 }
