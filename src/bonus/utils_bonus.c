@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 13:39:05 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/12 14:21:47 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/17 11:28:35 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	write_pipe(int	*fd, char *limiter)
 	close(fd[0]);
 	while (1)
 	{
+		ft_putstr_fd("pipex heredoc> ", STDOUT);
 		line = get_next_line(STDIN);
 		if (!line)
 			break ;
@@ -49,5 +50,6 @@ void	write_pipe(int	*fd, char *limiter)
 			exit(EXIT_SUCCESS);
 		}
 		write(fd[1], line, ft_strlen(line));
+		free(line);
 	}
 }

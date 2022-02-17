@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/12 14:19:13 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/17 11:18:47 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ void	child_p(char *cmd, char **env)
 
 void	main_p(char **av, char **env, int outfile)
 {
-	while (*(av++ + 2))
-		child_p(*av, env);
+	while (*(av + 2))
+		child_p(*(av++), env);
 	dup2(outfile, STDOUT_FILENO);
 	exec_cmd(*av, get_path_env(env));
+	close(outfile);
 }
 
 void	here_doc(char *limiter, int ac)
@@ -83,7 +84,7 @@ int	main(int ac, char **av, char **env)
 	if (!ft_strncmp(av[1], "here_doc", 8))
 	{
 		i = 3;
-		outfile = open(av[ac - 1], O_RDONLY, 0644);
+		outfile = open(av[ac - 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (outfile == -1)
 			exit_with_msg(av[ac - 1]);
 		here_doc(av[2], ac);
@@ -97,6 +98,6 @@ int	main(int ac, char **av, char **env)
 			exit_with_msg("Opening files");
 		dup2(infile, STDIN_FILENO);
 	}
-	main_p(av + i, env, outfile);
+	main_p(&av[i], env, outfile);
 	return (0);
 }

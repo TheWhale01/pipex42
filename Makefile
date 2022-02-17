@@ -33,6 +33,9 @@ bonus: $(NAME) $(OBJS_BONUS)
 	$(MAKE) -C $(LIBFT_DIR)
 	$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS) -L ./$(LIBFT_DIR)bin/ -lft
 
+bonus_debug: CFLAGS=-Wall -Wextra -Werror -I $(INCLUDES) -g
+bonus_debug: bonus
+
 debug: CFLAGS=-Wall -Wextra -Werror -I $(INCLUDES) -g
 debug: $(NAME)
 
@@ -55,4 +58,4 @@ re_debug: fclean debug
 re_sanitize: fclean sanitize
 
 .PHONY: all bonus debug clean fclean sanitize re_debug re_sanitize \
-re_bonus
+re_bonus bonus_debug

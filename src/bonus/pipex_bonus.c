@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 15:26:09 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/12 13:57:54 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/17 11:15:52 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ void	exec_cmd(char *cmd, char **path)
 	{
 		perror(tmp[0]);
 		free_tab(tmp);
+		free_tab(path);
 		return ;
 	}
 	if (execve(path_cmd, tmp, path) == -1)
 		perror(tmp[0]);
 	free_tab(tmp);
 	free_tab(path);
+	free(path_cmd);
 }
