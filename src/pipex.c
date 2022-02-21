@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 15:26:09 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/17 12:19:42 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/21 16:25:15 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "pipex_bonus.h"
+#include "pipex.h"
 
 char	**get_path_env(char **env)
 {
@@ -31,6 +31,8 @@ char	*get_path_cmd(char *cmd, char **env)
 	char	*tmp;
 	char	*path_cmd;
 
+	if (!access(cmd, F_OK))
+		return (cmd);
 	while (env && *env)
 	{
 		tmp = ft_strdup(*env);
@@ -44,21 +46,18 @@ char	*get_path_cmd(char *cmd, char **env)
 	return (NULL);
 }
 
-void	exec_cmd(char *cmd, char **path)
+void	exec_cmd(char *cmd, char **env)
 {
 	char	*path_cmd;
 	char	**tmp;
+	char	**path;
 
+	path = get_path_env(env);
 	tmp = ft_split(cmd, ' ');
 	path_cmd = get_path_cmd(tmp[0], path);
 	if (!path_cmd)
-	{
 		perror(tmp[0]);
-		free_tab(tmp);
-		free_tab(path);
-		return ;
-	}
-	if (execve(path_cmd, tmp, path) == -1)
+	else if (execve(path_cmd, tmp, path) == -1)
 		perror(tmp[0]);
 	free_tab(tmp);
 	free_tab(path);

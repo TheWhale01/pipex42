@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/17 12:17:41 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/21 16:17:14 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-#include "pipex_bonus.h"
+#include "pipex.h"
 
-void	child_p(char *cmd, char **env)
+void	child_p(char *cmd, char **env, int infile)
 {
 	int	pid;
 	int	fd[2];
@@ -29,8 +29,10 @@ void	child_p(char *cmd, char **env)
 	else if (!pid)
 	{
 		close(fd[0]);
+		if (!infile)
+			exit_with_msg("infile");
 		dup2(fd[1], STDOUT_FILENO);
-		exec_cmd(cmd, get_path_env(env));
+		exec_cmd(cmd, env);
 	}
 	else
 	{
@@ -40,13 +42,14 @@ void	child_p(char *cmd, char **env)
 	}
 }
 
-void	main_p(char **av, char **env, int outfile)
+void	main_p(char **av, char **env, int *files)
 {
 	while (*(av + 2))
-		child_p(*(av++), env);
-	dup2(outfile, STDOUT_FILENO);
-	exec_cmd(*av, get_path_env(env));
-	close(outfile);
+		child_p(*(av++), env, files[0]);
+	dup2(files[1], STDOUT_FILENO);
+	exec_cmd(*av, env);
+	close(files[0]);
+	close(files[1]);
 }
 
 void	here_doc(char *limiter, int ac)
@@ -75,21 +78,25 @@ void	here_doc(char *limiter, int ac)
 int	main(int ac, char **av, char **env)
 {
 	int		i;
-	int		infile;
-	int		outfile;
+	int		files[2];
 
 	if (ac < 5)
 		return (0);
 	i = 3;
-	outfile = safe_open(av[ac - 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (!ft_strncmp(av[1], "here_doc", 8))
+	{
+		files[1] = safe_open(av[ac - 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 		here_doc(av[2], ac);
+	}
 	else
 	{
 		i = 2;
-		infile = open(av[1], O_RDONLY, 0644);
-		dup2(infile, STDIN_FILENO);
+		files[0] = open(av[1], O_RDONLY, 0644);
+		if (files[0] == -1)
+			files[0] = 0;
+		files[1] = safe_open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		dup2(files[0], STDIN_FILENO);
 	}
-	main_p(&av[i], env, outfile);
+	main_p(&av[i], env, files);
 	return (0);
 }

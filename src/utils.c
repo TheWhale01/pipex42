@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 13:39:05 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/17 12:19:29 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/21 15:51:53 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "pipex_bonus.h"
+#include "pipex.h"
 
 void	exit_with_msg(char *str)
 {
 	perror(str);
-	exit(0);
+	exit(EXIT_FAILURE);
 }
 
 void	*free_tab(char **tab)

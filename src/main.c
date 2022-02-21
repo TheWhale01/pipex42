@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/17 12:21:07 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/21 16:24:10 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,27 @@
 #include <sys/wait.h>
 #include "pipex.h"
 
-void	child_p(char **av, char **path, int *fd)
+void	child_p(char **av, char **env, int *fd)
 {
 	int	infile;
 
-	infile = open(av[1], O_RDONLY, 0644);
-	if (infile == -1)
-		exit_with_msg(NULL);
+	infile = safe_open(av[1], O_RDONLY, 0644);
 	dup2(fd[1], STDOUT_FILENO);
 	dup2(infile, STDIN_FILENO);
 	close(fd[0]);
-	exec_cmd(av[2], path);
+	exec_cmd(av[2], env);
 	close(infile);
 }
 
-void	main_p(char **av, char **path, int *fd)
+void	main_p(char **av, char **env, int *fd)
 {
 	int	outfile;
 
-	outfile = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (outfile == -1)
-		exit_with_msg(NULL);
+	outfile = safe_open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	dup2(fd[0], STDIN_FILENO);
 	dup2(outfile, STDOUT_FILENO);
 	close(fd[1]);
-	exec_cmd(av[3], path);
+	exec_cmd(av[3], env);
 	close(outfile);
 }
 
@@ -48,20 +44,17 @@ int	main(int ac, char **av, char **env)
 {
 	int		fd[2];
 	int		pid;
-	char	**path;
 
 	if (ac != 5)
-		exit_with_msg(NULL);
+		exit_with_msg("Wrong number of args.");
 	if (pipe(fd))
-		exit_with_msg(NULL);
+		exit_with_msg("pipe");
 	pid = fork();
-	path = get_path_env(env);
 	if (pid == -1)
-		exit_with_msg(NULL);
-	else if (!pid)
-		child_p(av, path, fd);
+		exit_with_msg("fork");
+	if (!pid)
+		child_p(av, env, fd);
 	waitpid(pid, NULL, 0);
-	main_p(av, path, fd);
-	free_tab(path);
+	main_p(av, env, fd);
 	return (0);
 }
