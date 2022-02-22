@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 14:19:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/21 15:51:28 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/22 13:57:41 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 # define MAX_FD 254
 
 int		ft_putstr(char const *s);
+int		exec_cmd(char *cmd, char **env);
 int		ft_putstr_fd(char const *s, int fd);
 int		safe_open(char *filename, int mode, int perm);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 void	exit_with_msg(char *str);
-void	exec_cmd(char *cmd, char **env);
 void	write_pipe(int	*fd, char *limiter);
 void	ft_putendl_fd(char const *s, int fd);
 

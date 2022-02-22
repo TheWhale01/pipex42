@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/21 16:17:14 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/02/22 14:16:43 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	child_p(char *cmd, char **env, int infile)
 		if (!infile)
 			exit_with_msg("infile");
 		dup2(fd[1], STDOUT_FILENO);
-		exec_cmd(cmd, env);
+		if (!exec_cmd(cmd, env))
+			exit(EXIT_FAILURE);
 	}
 	else
 	{
@@ -48,7 +49,8 @@ void	main_p(char **av, char **env, int *files)
 		child_p(*(av++), env, files[0]);
 	dup2(files[1], STDOUT_FILENO);
 	exec_cmd(*av, env);
-	close(files[0]);
+	if (files[0] != -1)
+		close(files[0]);
 	close(files[1]);
 }
 
@@ -83,8 +85,9 @@ int	main(int ac, char **av, char **env)
 	if (ac < 5)
 		return (0);
 	i = 3;
-	if (!ft_strncmp(av[1], "here_doc", 8))
+	if (!ft_strncmp(av[1], "here_doc", ft_strlen(av[1])))
 	{
+		files[0] = -1;
 		files[1] = safe_open(av[ac - 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 		here_doc(av[2], ac);
 	}
