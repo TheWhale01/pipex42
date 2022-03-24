@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/03/24 11:05:07 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/03/24 14:39:35 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <sys/wait.h>
 #include "pipex.h"
 
-void	child_p(char *cmd, char **env, int infile)
+void	child_p(char *cmd, char **env, int infile, char *filename)
 {
 	int	pid;
 	int	fd[2];
@@ -30,7 +30,7 @@ void	child_p(char *cmd, char **env, int infile)
 	{
 		close(fd[0]);
 		if (!infile)
-			exit_with_msg("infile", 1);
+			exit_with_msg(filename, 1);
 		dup2(fd[1], STDOUT_FILENO);
 		if (!exec_cmd(cmd, env))
 			exit(EXIT_FAILURE);
@@ -43,10 +43,10 @@ void	child_p(char *cmd, char **env, int infile)
 	}
 }
 
-void	main_p(char **av, char **env, int *files)
+void	main_p(char **av, char **env, int *files, char *filename)
 {
 	while (*(av + 2))
-		child_p(*(av++), env, files[0]);
+		child_p(*(av++), env, files[0], filename);
 	dup2(files[1], STDOUT_FILENO);
 	exec_cmd(*av, env);
 	if (files[0] != -1)
@@ -99,6 +99,6 @@ int	main(int ac, char **av, char **env)
 		files[1] = safe_open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		dup2(files[0], STDIN_FILENO);
 	}
-	main_p(&av[i], env, files);
+	main_p(&av[i], env, files, av[1]);
 	return (0);
 }

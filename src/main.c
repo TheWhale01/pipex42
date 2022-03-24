@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/03/24 14:27:46 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/03/24 14:31:35 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ void	main_p(char **av, char **env, int *fd)
 	dup2(fd[0], STDIN_FILENO);
 	dup2(outfile, STDOUT_FILENO);
 	close(fd[1]);
-	if (!exec_cmd(av[3], env))
-		exit(EXIT_FAILURE);
+	exec_cmd(av[3], env);
 	close(outfile);
 }
 
