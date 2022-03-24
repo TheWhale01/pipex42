@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/03/24 10:00:15 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/03/24 11:05:07 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ int	main(int ac, char **av, char **env)
 	int		i;
 	int		files[2];
 
+	if (!env || !*env)
+		exit_with_msg("Environment not found.", 0);
 	if (ac < 5)
-		return (0);
+		exit_with_msg("Wrong number of args.", 0);
 	i = 3;
 	if (!ft_strncmp(av[1], "here_doc", ft_strlen(av[1])))
 	{
