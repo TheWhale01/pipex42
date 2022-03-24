@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 13:39:05 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/21 15:51:53 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/03/24 09:58:56 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@
 #include <stdlib.h>
 #include "pipex.h"
 
-void	exit_with_msg(char *str)
+void	exit_with_msg(char *str, int error)
 {
-	perror(str);
+	if (error)
+		perror(str);
+	else
+		ft_putendl_fd(str, STDERR_FILENO);
 	exit(EXIT_FAILURE);
 }
 
@@ -39,7 +42,7 @@ int	safe_open(char *filename, int mode, int perm)
 
 	fd = open(filename, mode, perm);
 	if (fd == -1)
-		exit_with_msg(filename);
+		exit_with_msg(filename, 1);
 	return (fd);
 }
 

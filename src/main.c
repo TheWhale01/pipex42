@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/21 16:24:10 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/03/24 10:51:15 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ int	main(int ac, char **av, char **env)
 	int		pid;
 
 	if (ac != 5)
-		exit_with_msg("Wrong number of args.");
+		exit_with_msg("Wrong number of args.", 0);
 	if (pipe(fd))
-		exit_with_msg("pipe");
+		exit_with_msg("pipe", 1);
 	pid = fork();
 	if (pid == -1)
-		exit_with_msg("fork");
+		exit_with_msg("fork", 1);
 	if (!pid)
 		child_p(av, env, fd);
 	waitpid(pid, NULL, 0);

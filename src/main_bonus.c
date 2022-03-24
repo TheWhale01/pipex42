@@ -6,7 +6,7 @@
 /*   By: hubretec <hubretec@student.42.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 16:02:54 by hubretec          #+#    #+#             */
-/*   Updated: 2022/02/22 14:16:43 by hubretec         ###   ########.fr       */
+/*   Updated: 2022/03/24 10:00:15 by hubretec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ void	child_p(char *cmd, char **env, int infile)
 	int	fd[2];
 
 	if (pipe(fd) == -1)
-		exit_with_msg("pipe");
+		exit_with_msg("pipe", 1);
 	pid = fork();
 	if (pid == -1)
-		exit_with_msg("fork");
+		exit_with_msg("fork", 1);
 	else if (!pid)
 	{
 		close(fd[0]);
 		if (!infile)
-			exit_with_msg("infile");
+			exit_with_msg("infile", 1);
 		dup2(fd[1], STDOUT_FILENO);
 		if (!exec_cmd(cmd, env))
 			exit(EXIT_FAILURE);
@@ -60,12 +60,9 @@ void	here_doc(char *limiter, int ac)
 	int		fd[2];
 
 	if (ac < 6)
-	{
-		ft_putendl_fd("Wrong number of args.", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
+		exit_with_msg("Wrong number of args.", 0);
 	if (pipe(fd) == -1)
-		exit_with_msg("pipe");
+		exit_with_msg("pipe", 1);
 	pid = fork();
 	if (!pid)
 		write_pipe(fd, limiter);
